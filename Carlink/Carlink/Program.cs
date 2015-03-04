@@ -98,9 +98,9 @@ namespace Carlink
             Console.WriteLine(now);
             PrintValues(timeBitArray);
             BitArray resultBitArray = new BitArray(timeBitArray);
-            byte[] bytes = new byte[4];
-            resultBitArray.CopyTo(bytes, 0);
-            foreach (var b in bytes)
+            byte[] time = new byte[4];
+            resultBitArray.CopyTo(time, 0);
+            foreach (var b in time)
             {
                 Console.WriteLine(b);
             }
