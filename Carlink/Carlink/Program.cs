@@ -106,6 +106,13 @@ namespace Carlink
             }
             #endregion
 
+            byte longDeg, longMin, longSec, latDeg, latMin, latSec;
+            longDeg = (byte)(random.Next(180));
+            longMin = (byte)(random.Next(60));
+            longSec = (byte)(random.Next(60));
+            latDeg = (byte)(random.Next(90));
+            latMin = (byte)(random.Next(60));
+            latSec = (byte)(random.Next(60));
             switch (mystatus)
             {
                 case 10:
