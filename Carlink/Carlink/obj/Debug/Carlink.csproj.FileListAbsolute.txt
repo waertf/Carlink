@@ -1,1 +1,6 @@
 D:\job\alonso\CarLink\Carlink\Carlink\bin\Debug\Carlink.exe.config
+D:\job\alonso\CarLink\Carlink\Carlink\bin\Debug\Carlink.exe
+D:\job\alonso\CarLink\Carlink\Carlink\bin\Debug\Carlink.pdb
+D:\job\alonso\CarLink\Carlink\Carlink\obj\Debug\Carlink.csprojResolveAssemblyReference.cache
+D:\job\alonso\CarLink\Carlink\Carlink\obj\Debug\Carlink.exe
+D:\job\alonso\CarLink\Carlink\Carlink\obj\Debug\Carlink.pdb
