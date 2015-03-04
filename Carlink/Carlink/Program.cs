@@ -119,6 +119,41 @@ namespace Carlink
                 case 11:
                 case 12:
                 case 13:
+                {
+                    byte engineCoolantTemperature = (byte)(random.Next(byte.MaxValue));
+                    byte fuelPressure = (byte)(random.Next(byte.MaxValue));
+                    byte intakeManifoldPressure = (byte)(random.Next(byte.MaxValue));
+                    byte RPMHigh = (byte)(random.Next(byte.MaxValue));
+                    byte RPMLow = (byte)(random.Next(byte.MaxValue));
+                    byte vehicleSpeed = (byte)(random.Next(byte.MaxValue));
+                    byte intakeAirTemperature = (byte)(random.Next(byte.MaxValue));
+                    byte airFlowRate = (byte)(random.Next(byte.MaxValue));
+                    byte throttlePosition = (byte)(random.Next(byte.MaxValue));
+                    byte batteryVoltage = (byte)(random.Next(byte.MaxValue));
+                    byte[] dataBytes = new byte[20]
+                    {
+                        time[0],
+                        time[1],
+                        time[2],
+                        time[3],
+                        longDeg,
+                        longMin,
+                        longSec,
+                        latDeg,
+                        latMin,
+                        latSec,
+                        engineCoolantTemperature,
+                        fuelPressure,
+                        intakeManifoldPressure,
+                        RPMHigh,
+                        RPMLow,
+                        vehicleSpeed,
+                        intakeAirTemperature,
+                        airFlowRate,
+                        throttlePosition,
+                        batteryVoltage
+                    };
+                } 
                     break;
                 case 20:
                     break;
@@ -126,10 +161,40 @@ namespace Carlink
                     break;
                 case 41:
                 case 42:
+                {
+                    byte[] dataBytes = new byte[10]
+                    {
+                        time[0],
+                        time[1],
+                        time[2],
+                        time[3],
+                        longDeg,
+                        longMin,
+                        longSec,
+                        latDeg,
+                        latMin,
+                        latSec
+                    };
+                }
                     break;
                 case 51:
                 case 52:
                 case 53:
+                {
+                    byte[] dataBytes = new byte[10]
+                    {
+                        time[0],
+                        time[1],
+                        time[2],
+                        time[3],
+                        longDeg,
+                        longMin,
+                        longSec,
+                        latDeg,
+                        latMin,
+                        latSec
+                    };
+                }
                     break;
             }
             Console.ReadLine();
