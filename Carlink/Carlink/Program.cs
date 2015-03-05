@@ -160,8 +160,56 @@ namespace Carlink
                 } 
                     break;
                 case 20:
+                    {
+                        byte[] dataBytes = new byte[20]
+                        {
+                            time[0],
+                            time[1],
+                            time[2],
+                            time[3],
+                            longDeg,
+                            longMin,
+                            longSec,
+                            latDeg,
+                            latMin,
+                            latSec,
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff))
+                        };
+                    }
                     break;
                 case 30:
+                    {
+                        byte[] dataBytes = new byte[18]
+                        {
+                            time[0],
+                            time[1],
+                            time[2],
+                            time[3],
+                            longDeg,
+                            longMin,
+                            longSec,
+                            latDeg,
+                            latMin,
+                            latSec,
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff)),
+                            (byte)(random.Next(0xff))
+                        };
+                    }
                     break;
                 case 41:
                 case 42:
