@@ -11,6 +11,7 @@ namespace Carlink
     {
         static readonly Random random = new Random();
         static readonly string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        static readonly string distance = "0123456789";
         private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,51,52,53};
         static void Main(string[] args)
         {
@@ -53,7 +54,10 @@ namespace Carlink
     Enumerable.Repeat(chars, 8)
               .Select(s => s[random.Next(s.Length)])
               .ToArray());
-            int totalGoDistance = random.Next(999999);
+            var totalGoDistance = new string(
+    Enumerable.Repeat(distance, 6)
+              .Select(s => s[random.Next(s.Length)])
+              .ToArray());
             byte mystatus = status[random.Next(status.Length)];
 
             string now = DateTime.Now.ToString("yyMMddHHmmss");
