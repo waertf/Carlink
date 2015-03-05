@@ -15,6 +15,7 @@ namespace Carlink
         private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,51,52,53};
         static void Main(string[] args)
         {
+            /*
             BitArray yearBitArray = new BitArray(6,false);
             BitArray monthBitArray = new BitArray(4, false);
             BitArray dayBitArray = new BitArray(5, false);
@@ -48,16 +49,17 @@ namespace Carlink
             {
                 Console.WriteLine(b);
             }
-
+            */
             #region
-            var uid = new string(
+            bool[] timeBitArray = new bool[32];
+            byte[] uid = Encoding.ASCII.GetBytes(new string(
     Enumerable.Repeat(chars, 8)
               .Select(s => s[random.Next(s.Length)])
-              .ToArray());
-            var totalGoDistance = new string(
-    Enumerable.Repeat(distance, 6)
-              .Select(s => s[random.Next(s.Length)])
-              .ToArray());
+              .ToArray()));
+            byte[] totalGoDistance = Encoding.ASCII.GetBytes(new string(
+                Enumerable.Repeat(distance, 6)
+                    .Select(s => s[random.Next(s.Length)])
+                    .ToArray()));
             byte mystatus = status[random.Next(status.Length)];
 
             string now = DateTime.Now.ToString("yyMMddHHmmss");
@@ -99,15 +101,15 @@ namespace Carlink
                 timeBitArray[i] = secArray[i - 26];
             }
     
-            Console.WriteLine(now);
-            PrintValues(timeBitArray);
+            //Console.WriteLine(now);
+            //PrintValues(timeBitArray);
             BitArray resultBitArray = new BitArray(timeBitArray);
             byte[] time = new byte[4];
             resultBitArray.CopyTo(time, 0);
-            foreach (var b in time)
-            {
-                Console.WriteLine(b);
-            }
+            //foreach (var b in time)
+            //{
+                //Console.WriteLine(b);
+            //}
             #endregion
 
             byte longDeg, longMin, longSec, latDeg, latMin, latSec;
@@ -157,6 +159,10 @@ namespace Carlink
                         throttlePosition,
                         batteryVoltage
                     };
+                    byte[] sendBytes = new byte[35];
+                    Buffer.BlockCopy(uid,0,sendBytes,0,uid.Length);
+                    sendBytes.SetValue(status,uid.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1, dataBytes.Length);
                 } 
                     break;
                 case 20:
@@ -249,6 +255,7 @@ namespace Carlink
                 }
                     break;
             }
+
             Console.ReadLine();
             
         }
