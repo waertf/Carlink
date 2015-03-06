@@ -3,6 +3,5 @@ D:\job\alonso\CarLink\Carlink\Carlink\bin\Debug\CarlinkSenderTest.exe
 D:\job\alonso\CarLink\Carlink\Carlink\bin\Debug\CarlinkSenderTest.pdb
 D:\job\alonso\CarLink\Carlink\Carlink\obj\Debug\CarlinkSenderTest.exe
 D:\job\alonso\CarLink\Carlink\Carlink\obj\Debug\CarlinkSenderTest.pdb
-D:\job\alonso\CarLink\Carlink\Carlink\obj\Debug\CarlinkSenderTest.csprojResolveAssemblyReference.cache
 D:\job\alonso\CarLink\Carlink\Carlink\bin\Debug\Gurock.SmartInspect.dll
 D:\job\alonso\CarLink\Carlink\Carlink\bin\Debug\Gurock.SmartInspect.xml
