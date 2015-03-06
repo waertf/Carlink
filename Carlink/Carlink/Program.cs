@@ -62,7 +62,18 @@ namespace Carlink
 
             Thread workerThread = new Thread(send);
             workerThread.Start();
-            
+            /*
+            byte[] aBytes = new byte[]{1,2,3};
+            byte[] bBytes = new byte[]{ 4,5,6 };
+            byte[] cBytes = new byte[] { 7,8,9 };
+            byte[] dBytes = new byte[] { 10,11,12 };
+            byte[] combinBytes = Combine(aBytes, bBytes, cBytes, dBytes);
+            foreach (var combinByte in combinBytes)
+            {
+                Console.WriteLine(combinByte);
+            }
+            Console.WriteLine(combinBytes.Length);
+            */
         }
 
         static void send()
@@ -330,6 +341,17 @@ namespace Carlink
                 Console.Write("{0,8}", obj);
             }
             Console.WriteLine();
+        }
+        static byte[] Combine(params byte[][] arrays)
+        {
+            byte[] rv = new byte[arrays.Sum(a => a.Length)];
+            int offset = 0;
+            foreach (byte[] array in arrays)
+            {
+                System.Buffer.BlockCopy(array, 0, rv, offset, array.Length);
+                offset += array.Length;
+            }
+            return rv;
         }
     }
 }
