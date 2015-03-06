@@ -161,8 +161,9 @@ namespace Carlink
                     };
                     byte[] sendBytes = new byte[35];
                     Buffer.BlockCopy(uid,0,sendBytes,0,uid.Length);
-                    sendBytes.SetValue(status,uid.Length);
-                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1, dataBytes.Length);
+                    sendBytes.SetValue(mystatus, uid.Length);
+                    Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length+1, totalGoDistance.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
                 } 
                     break;
                 case 20:
@@ -190,6 +191,11 @@ namespace Carlink
                             (byte)(random.Next(0xff)),
                             (byte)(random.Next(0xff))
                         };
+                        byte[] sendBytes = new byte[35];
+                        Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
+                        sendBytes.SetValue(mystatus, uid.Length);
+                        Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
+                        Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
                     }
                     break;
                 case 30:
@@ -215,6 +221,11 @@ namespace Carlink
                             (byte)(random.Next(0xff)),
                             (byte)(random.Next(0xff))
                         };
+                        byte[] sendBytes = new byte[33];
+                        Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
+                        sendBytes.SetValue(mystatus, uid.Length);
+                        Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
+                        Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
                     }
                     break;
                 case 41:
@@ -233,6 +244,15 @@ namespace Carlink
                         latMin,
                         latSec
                     };
+                    now = DateTime.Now.ToString("yyyyMMddHHmm");
+                    byte[] nowBytes = Encoding.ASCII.GetBytes(now);
+                    byte[] sendBytes = new byte[45];
+                    Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
+                    sendBytes.SetValue(mystatus, uid.Length);
+                    Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
+                    Buffer.BlockCopy(uid, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length + dataBytes.Length, uid.Length);
+                    Buffer.BlockCopy(nowBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length + dataBytes.Length+uid.Length, nowBytes.Length);
                 }
                     break;
                 case 51:
@@ -252,6 +272,11 @@ namespace Carlink
                         latMin,
                         latSec
                     };
+                    byte[] sendBytes = new byte[25];
+                    Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
+                    sendBytes.SetValue(mystatus, uid.Length);
+                    Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
                 }
                     break;
             }
