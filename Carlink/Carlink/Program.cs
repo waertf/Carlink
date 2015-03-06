@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -67,17 +68,27 @@ namespace Carlink
             byte[] bBytes = new byte[]{ 4,5,6 };
             byte[] cBytes = new byte[] { 7,8,9 };
             byte[] dBytes = new byte[] { 10,11,12 };
-            byte[] combinBytes = Combine(aBytes, bBytes, cBytes, dBytes);
-            foreach (var combinByte in combinBytes)
+            //byte[] combinBytes = Combine(aBytes, bBytes, cBytes, dBytes);
+            IEnumerable<byte> combinBytes=new byte[]{};
+            combinBytes= combinBytes.Concat(aBytes);
+            combinBytes = combinBytes.Concat(bBytes);
+            combinBytes = combinBytes.Concat(cBytes);
+            combinBytes = combinBytes.Concat(dBytes);
+            byte[] c = combinBytes.ToArray();
+            foreach (var combinByte in c)
             {
                 Console.WriteLine(combinByte);
             }
-            Console.WriteLine(combinBytes.Length);
+            
+            Console.WriteLine(c.Length);
             */
         }
 
         static void send()
         {
+            IEnumerable<byte> totalSendBytes = new byte[] { };
+            Stopwatch stopwatch= new Stopwatch();
+            stopwatch.Start();
             while (true)
             {
                 #region
@@ -197,6 +208,7 @@ namespace Carlink
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                            totalSendBytes=totalSendBytes.Concat(sendBytes);
                             SiAuto.Main.LogArray("send status:"+mystatus.ToString(),sendBytes);
                         }
                         break;
@@ -230,6 +242,7 @@ namespace Carlink
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                            totalSendBytes = totalSendBytes.Concat(sendBytes);
                             SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
@@ -261,6 +274,7 @@ namespace Carlink
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                            totalSendBytes = totalSendBytes.Concat(sendBytes);
                             SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
@@ -291,6 +305,7 @@ namespace Carlink
                                 uid.Length);
                             Buffer.BlockCopy(nowBytes, 0, sendBytes,
                                 uid.Length + 1 + totalGoDistance.Length + dataBytes.Length + uid.Length, nowBytes.Length);
+                            totalSendBytes = totalSendBytes.Concat(sendBytes);
                             SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
@@ -316,6 +331,7 @@ namespace Carlink
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                            totalSendBytes = totalSendBytes.Concat(sendBytes);
                             SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
