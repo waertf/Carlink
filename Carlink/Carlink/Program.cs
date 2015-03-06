@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Carlink
@@ -13,7 +14,8 @@ namespace Carlink
         static readonly string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         static readonly string distance = "0123456789";
         private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,51,52,53};
-        static void Main(string[] args)
+
+        private static void Main(string[] args)
         {
             /*
             BitArray yearBitArray = new BitArray(6,false);
@@ -50,12 +52,15 @@ namespace Carlink
                 Console.WriteLine(b);
             }
             */
+            while (true)
+            {
             #region
+
             bool[] timeBitArray = new bool[32];
             byte[] uid = Encoding.ASCII.GetBytes(new string(
-    Enumerable.Repeat(chars, 8)
-              .Select(s => s[random.Next(s.Length)])
-              .ToArray()));
+                Enumerable.Repeat(chars, 8)
+                    .Select(s => s[random.Next(s.Length)])
+                    .ToArray()));
             byte[] totalGoDistance = Encoding.ASCII.GetBytes(new string(
                 Enumerable.Repeat(distance, 6)
                     .Select(s => s[random.Next(s.Length)])
@@ -82,7 +87,7 @@ namespace Carlink
             }
             for (int i = 6; i < 10; i++)
             {
-                timeBitArray[i] = monArrayy[i-6];
+                timeBitArray[i] = monArrayy[i - 6];
             }
             for (int i = 10; i < 15; i++)
             {
@@ -100,7 +105,7 @@ namespace Carlink
             {
                 timeBitArray[i] = secArray[i - 26];
             }
-    
+
             //Console.WriteLine(now);
             //PrintValues(timeBitArray);
             BitArray resultBitArray = new BitArray(timeBitArray);
@@ -108,17 +113,19 @@ namespace Carlink
             resultBitArray.CopyTo(time, 0);
             //foreach (var b in time)
             //{
-                //Console.WriteLine(b);
+            //Console.WriteLine(b);
             //}
+
             #endregion
 
             byte longDeg, longMin, longSec, latDeg, latMin, latSec;
-            longDeg = (byte)(random.Next(180));
-            longMin = (byte)(random.Next(60));
-            longSec = (byte)(random.Next(60));
-            latDeg = (byte)(random.Next(90));
-            latMin = (byte)(random.Next(60));
-            latSec = (byte)(random.Next(60));
+            longDeg = (byte) (random.Next(180));
+            longMin = (byte) (random.Next(60));
+            longSec = (byte) (random.Next(60));
+            latDeg = (byte) (random.Next(90));
+            latMin = (byte) (random.Next(60));
+            latSec = (byte) (random.Next(60));
+            Console.WriteLine(mystatus);
             switch (mystatus)
             {
                 case 10:
@@ -126,16 +133,16 @@ namespace Carlink
                 case 12:
                 case 13:
                 {
-                    byte engineCoolantTemperature = (byte)(random.Next(byte.MaxValue));
-                    byte fuelPressure = (byte)(random.Next(byte.MaxValue));
-                    byte intakeManifoldPressure = (byte)(random.Next(byte.MaxValue));
-                    byte RPMHigh = (byte)(random.Next(byte.MaxValue));
-                    byte RPMLow = (byte)(random.Next(byte.MaxValue));
-                    byte vehicleSpeed = (byte)(random.Next(byte.MaxValue));
-                    byte intakeAirTemperature = (byte)(random.Next(byte.MaxValue));
-                    byte airFlowRate = (byte)(random.Next(byte.MaxValue));
-                    byte throttlePosition = (byte)(random.Next(byte.MaxValue));
-                    byte batteryVoltage = (byte)(random.Next(byte.MaxValue));
+                    byte engineCoolantTemperature = (byte) (random.Next(byte.MaxValue));
+                    byte fuelPressure = (byte) (random.Next(byte.MaxValue));
+                    byte intakeManifoldPressure = (byte) (random.Next(byte.MaxValue));
+                    byte RPMHigh = (byte) (random.Next(byte.MaxValue));
+                    byte RPMLow = (byte) (random.Next(byte.MaxValue));
+                    byte vehicleSpeed = (byte) (random.Next(byte.MaxValue));
+                    byte intakeAirTemperature = (byte) (random.Next(byte.MaxValue));
+                    byte airFlowRate = (byte) (random.Next(byte.MaxValue));
+                    byte throttlePosition = (byte) (random.Next(byte.MaxValue));
+                    byte batteryVoltage = (byte) (random.Next(byte.MaxValue));
                     byte[] dataBytes = new byte[20]
                     {
                         time[0],
@@ -160,73 +167,73 @@ namespace Carlink
                         batteryVoltage
                     };
                     byte[] sendBytes = new byte[35];
-                    Buffer.BlockCopy(uid,0,sendBytes,0,uid.Length);
+                    Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                     sendBytes.SetValue(mystatus, uid.Length);
-                    Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length+1, totalGoDistance.Length);
-                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
-                } 
+                    Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                }
                     break;
                 case 20:
+                {
+                    byte[] dataBytes = new byte[20]
                     {
-                        byte[] dataBytes = new byte[20]
-                        {
-                            time[0],
-                            time[1],
-                            time[2],
-                            time[3],
-                            longDeg,
-                            longMin,
-                            longSec,
-                            latDeg,
-                            latMin,
-                            latSec,
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff))
-                        };
-                        byte[] sendBytes = new byte[35];
-                        Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
-                        sendBytes.SetValue(mystatus, uid.Length);
-                        Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
-                        Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
-                    }
+                        time[0],
+                        time[1],
+                        time[2],
+                        time[3],
+                        longDeg,
+                        longMin,
+                        longSec,
+                        latDeg,
+                        latMin,
+                        latSec,
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff))
+                    };
+                    byte[] sendBytes = new byte[35];
+                    Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
+                    sendBytes.SetValue(mystatus, uid.Length);
+                    Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                }
                     break;
                 case 30:
+                {
+                    byte[] dataBytes = new byte[18]
                     {
-                        byte[] dataBytes = new byte[18]
-                        {
-                            time[0],
-                            time[1],
-                            time[2],
-                            time[3],
-                            longDeg,
-                            longMin,
-                            longSec,
-                            latDeg,
-                            latMin,
-                            latSec,
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff)),
-                            (byte)(random.Next(0xff))
-                        };
-                        byte[] sendBytes = new byte[33];
-                        Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
-                        sendBytes.SetValue(mystatus, uid.Length);
-                        Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
-                        Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
-                    }
+                        time[0],
+                        time[1],
+                        time[2],
+                        time[3],
+                        longDeg,
+                        longMin,
+                        longSec,
+                        latDeg,
+                        latMin,
+                        latSec,
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff)),
+                        (byte) (random.Next(0xff))
+                    };
+                    byte[] sendBytes = new byte[33];
+                    Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
+                    sendBytes.SetValue(mystatus, uid.Length);
+                    Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                }
                     break;
                 case 41:
                 case 42:
@@ -250,9 +257,11 @@ namespace Carlink
                     Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                     sendBytes.SetValue(mystatus, uid.Length);
                     Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
-                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1+totalGoDistance.Length, dataBytes.Length);
-                    Buffer.BlockCopy(uid, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length + dataBytes.Length, uid.Length);
-                    Buffer.BlockCopy(nowBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length + dataBytes.Length+uid.Length, nowBytes.Length);
+                    Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
+                    Buffer.BlockCopy(uid, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length + dataBytes.Length,
+                        uid.Length);
+                    Buffer.BlockCopy(nowBytes, 0, sendBytes,
+                        uid.Length + 1 + totalGoDistance.Length + dataBytes.Length + uid.Length, nowBytes.Length);
                 }
                     break;
                 case 51:
@@ -280,8 +289,10 @@ namespace Carlink
                 }
                     break;
             }
+                Thread.Sleep(1000);
+        }
 
-            Console.ReadLine();
+        Console.ReadLine();
             
         }
         static int getIntFromBitArray(BitArray bitArray)
