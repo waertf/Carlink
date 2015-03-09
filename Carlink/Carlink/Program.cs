@@ -61,8 +61,12 @@ namespace Carlink
                                     "\\log.sil\",rotate=weekly,append=true,maxparts=5,maxsize=500MB)";
             SiAuto.Si.Enabled = true;
 
-            Thread workerThread = new Thread(send);
-            workerThread.Start();
+            Thread[] workerThread = new Thread[Properties.Settings.Default.CarNumber];
+            for (int i = 0; i < Properties.Settings.Default.CarNumber; i++)
+            {
+                workerThread[i]=new Thread(send);
+                workerThread[i].Start();
+            }
             /*
             byte[] aBytes = new byte[]{1,2,3};
             byte[] bBytes = new byte[]{ 4,5,6 };
