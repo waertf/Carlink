@@ -34,5 +34,29 @@ namespace Carlink.Properties {
                 this["CarNumber"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string serverIPAddress {
+            get {
+                return ((string)(this["serverIPAddress"]));
+            }
+            set {
+                this["serverIPAddress"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int serverPort {
+            get {
+                return ((int)(this["serverPort"]));
+            }
+            set {
+                this["serverPort"] = value;
+            }
+        }
     }
 }

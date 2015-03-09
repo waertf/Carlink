@@ -19,6 +19,8 @@ namespace Carlink
         static readonly string distance = "0123456789";
         private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,51,52,53};
 
+
+
         private static void Main(string[] args)
         {
             /*
@@ -91,6 +93,8 @@ namespace Carlink
         static void send()
         {
             IEnumerable<byte> totalSendBytes = new byte[] { };
+            string ipAddress = Properties.Settings.Default.serverIPAddress;
+            int port = Properties.Settings.Default.serverPort;
             Stopwatch stopwatch= new Stopwatch();
             stopwatch.Start();
             while (true)
@@ -341,6 +345,17 @@ namespace Carlink
                             SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
+                }
+                if (stopwatch.Elapsed.Seconds >= 15)
+                {
+                    stopwatch.Restart();
+                    byte[] sendBytes = totalSendBytes.ToArray();
+                    totalSendBytes = null;
+                    Task.Factory.StartNew(() =>
+                    {
+                        var mysocket = new SocketClient(ipAddress, port);
+                        mysocket.Write(sendBytes);
+                    });
                 }
                 Thread.Sleep(1000);
             }

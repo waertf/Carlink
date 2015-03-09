@@ -27,13 +27,15 @@ namespace Carlink
         {
             try
             {
+                byte[] mySendBytes = data_append_dataLength(dataBytes);
                 _sender.Connect(_ip,_port);
-                _sender.Send(data_append_dataLength(dataBytes));
+                _sender.Send(mySendBytes);
                 _sender.Shutdown(SocketShutdown.Both);
                 _sender.Disconnect(true);
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 SiAuto.Main.LogException(ex);
             }
         }
@@ -46,6 +48,8 @@ namespace Carlink
             byte[] rv = new byte[data_length.Length + byteArray.Length];
             System.Buffer.BlockCopy(data_length, 0, rv, 0, data_length.Length);
             System.Buffer.BlockCopy(byteArray, 0, rv, data_length.Length, byteArray.Length);
+            //SiAuto.Main.AddCheckpoint("original length:" + byteArray.Length);
+            //SiAuto.Main.AddCheckpoint("data_append_dataLength length:"+rv.Length);
             return rv;
         }
         byte[] int_to_hex_little_endian(int length)
