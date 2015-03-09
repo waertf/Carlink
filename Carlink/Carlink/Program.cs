@@ -95,6 +95,8 @@ namespace Carlink
             stopwatch.Start();
             while (true)
             {
+                if(totalSendBytes==null)
+                    totalSendBytes = new byte[] { };
                 #region
 
                 bool[] timeBitArray = new bool[32];
