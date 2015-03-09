@@ -95,6 +95,9 @@ namespace Carlink
             IEnumerable<byte> totalSendBytes = new byte[] { };
             string ipAddress = Properties.Settings.Default.serverIPAddress;
             int port = Properties.Settings.Default.serverPort;
+
+            ThreadLocal<SocketClient> mysockeThreadLocal = new ThreadLocal<SocketClient>(() => { return new SocketClient(ipAddress, port); });
+
             Stopwatch stopwatch= new Stopwatch();
             stopwatch.Start();
             while (true)
@@ -353,8 +356,9 @@ namespace Carlink
                     totalSendBytes = null;
                     Task.Factory.StartNew(() =>
                     {
-                        var mysocket = new SocketClient(ipAddress, port);
-                        mysocket.Write(sendBytes);
+                        //SocketClient mysocket = new SocketClient(ipAddress, port);
+                        //mysocket.Write(sendBytes);
+                            mysockeThreadLocal.Value.Write(sendBytes);
                     });
                 }
                 Thread.Sleep(1000);
