@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="CarNumber" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">100</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="serverIPAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">127.0.0.1</Value>
     </Setting>
     <Setting Name="serverPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">13</Value>
     </Setting>
   </Settings>
 </SettingsFile>
