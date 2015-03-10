@@ -96,7 +96,7 @@ namespace Carlink
             string ipAddress = Properties.Settings.Default.serverIPAddress;
             int port = Properties.Settings.Default.serverPort;
 
-            ThreadLocal<SocketClient> mysockeThreadLocal = new ThreadLocal<SocketClient>(() => { return new SocketClient(ipAddress, port); });
+            //ThreadLocal<SocketClient> mysockeThreadLocal = new ThreadLocal<SocketClient>(() => { return new SocketClient(ipAddress, port); });
 
             Stopwatch stopwatch= new Stopwatch();
             stopwatch.Start();
@@ -175,7 +175,7 @@ namespace Carlink
                 latDeg = (byte)(random.Next(90));
                 latMin = (byte)(random.Next(60));
                 latSec = (byte)(random.Next(60));
-                Console.WriteLine(mystatus);
+                //Console.WriteLine(mystatus);
                 switch (mystatus)
                 {
                     case 10:
@@ -353,12 +353,13 @@ namespace Carlink
                 {
                     stopwatch.Restart();
                     byte[] sendBytes = totalSendBytes.ToArray();
+                    Console.WriteLine(sendBytes.Length);
                     totalSendBytes = null;
                     Task.Factory.StartNew(() =>
                     {
-                        //SocketClient mysocket = new SocketClient(ipAddress, port);
-                        //mysocket.Write(sendBytes);
-                            mysockeThreadLocal.Value.Write(sendBytes);
+                        SocketClient mysocket = new SocketClient(ipAddress, port);
+                        mysocket.Write(sendBytes);
+                            //mysockeThreadLocal.Value.Write(sendBytes);
                     });
                 }
                 Thread.Sleep(1000);
