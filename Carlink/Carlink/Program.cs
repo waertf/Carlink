@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace Carlink
 {
     class Program
     {
-        static readonly Random random = new Random();
+        //static readonly Random random = new Random();
         static readonly string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         static readonly string distance = "0123456789";
         private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,51,52,53};
@@ -67,7 +68,7 @@ namespace Carlink
             for (int i = 0; i < Properties.Settings.Default.CarNumber; i++)
             {
                 workerThread[i]=new Thread(send);
-                workerThread[i].Start();
+                workerThread[i].Start(new Random());
             }
             /*
             byte[] aBytes = new byte[]{1,2,3};
@@ -90,8 +91,9 @@ namespace Carlink
             */
         }
 
-        static void send()
+        static void send(object rand)
         {
+            var random = (Random) rand;
             IEnumerable<byte> totalSendBytes = new byte[] { };
             string ipAddress = Properties.Settings.Default.serverIPAddress;
             int port = Properties.Settings.Default.serverPort;
