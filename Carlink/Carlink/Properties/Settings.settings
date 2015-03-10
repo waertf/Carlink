@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="CarNumber" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">1</Value>
+      <Value Profile="(Default)">500</Value>
     </Setting>
     <Setting Name="serverIPAddress" Type="System.String" Scope="User">
       <Value Profile="(Default)">127.0.0.1</Value>
