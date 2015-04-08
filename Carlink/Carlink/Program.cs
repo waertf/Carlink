@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Gurock.SmartInspect;
+//using Gurock.SmartInspect;
 
 namespace Carlink
 {
@@ -19,7 +19,7 @@ namespace Carlink
         static readonly string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         static readonly string distance = "0123456789";
         private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,51,52,53};
-
+        static readonly object mylock = new object();
 
 
         private static void Main(string[] args)
@@ -59,10 +59,7 @@ namespace Carlink
                 Console.WriteLine(b);
             }
             */
-            SiAuto.Si.Connections = @"file(filename=""" +
-                                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) +
-                                    "\\log.sil\",rotate=weekly,append=true,maxparts=5,maxsize=500MB)";
-            SiAuto.Si.Enabled = true;
+            
 
             Thread[] workerThread = new Thread[Properties.Settings.Default.CarNumber];
             for (int i = 0; i < Properties.Settings.Default.CarNumber; i++)
@@ -224,7 +221,7 @@ namespace Carlink
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
                             totalSendBytes=totalSendBytes.Concat(sendBytes);
-                            SiAuto.Main.LogArray("send status:"+mystatus.ToString(),sendBytes);
+                            //SiAuto.Main.LogArray("send status:"+mystatus.ToString(),sendBytes);
                         }
                         break;
                     case 20:
@@ -258,7 +255,7 @@ namespace Carlink
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
                             totalSendBytes = totalSendBytes.Concat(sendBytes);
-                            SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
+                            //SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
                     case 30:
@@ -290,7 +287,7 @@ namespace Carlink
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
                             totalSendBytes = totalSendBytes.Concat(sendBytes);
-                            SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
+                            //SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
                     case 41:
@@ -321,7 +318,7 @@ namespace Carlink
                             Buffer.BlockCopy(nowBytes, 0, sendBytes,
                                 uid.Length + 1 + totalGoDistance.Length + dataBytes.Length + uid.Length, nowBytes.Length);
                             totalSendBytes = totalSendBytes.Concat(sendBytes);
-                            SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
+                            //SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
                     case 51:
@@ -347,7 +344,7 @@ namespace Carlink
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
                             Buffer.BlockCopy(dataBytes, 0, sendBytes, uid.Length + 1 + totalGoDistance.Length, dataBytes.Length);
                             totalSendBytes = totalSendBytes.Concat(sendBytes);
-                            SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
+                            //SiAuto.Main.LogArray("send status:" + mystatus.ToString(), sendBytes);
                         }
                         break;
                 }
@@ -355,14 +352,24 @@ namespace Carlink
                 {
                     stopwatch.Restart();
                     byte[] sendBytes = totalSendBytes.ToArray();
-                    Console.WriteLine(sendBytes.Length);
+                    //Console.WriteLine(sendBytes.Length);
                     totalSendBytes = null;
+                    System.Threading.Thread t1 = new System.Threading.Thread
+     (delegate()
+     {
+         SocketClient mysocket = new SocketClient(ipAddress, port);
+         mysocket.Write(sendBytes);
+     });
+                    t1.Start();
+                    /*
                     Task.Factory.StartNew(() =>
                     {
+
                         SocketClient mysocket = new SocketClient(ipAddress, port);
                         mysocket.Write(sendBytes);
                             //mysockeThreadLocal.Value.Write(sendBytes);
                     });
+                    */
                 }
                 Thread.Sleep(1000);
             }
