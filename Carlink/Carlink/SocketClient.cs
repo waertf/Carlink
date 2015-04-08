@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using Gurock.SmartInspect;
+
 
 namespace Carlink
 {
@@ -28,17 +28,18 @@ namespace Carlink
             try
             {
                 byte[] mySendBytes = data_append_dataLength(dataBytes);
-                Console.WriteLine(mySendBytes.Length);
-                Console.WriteLine(mySendBytes[0]+" "+mySendBytes[1]);
+                //Console.WriteLine(mySendBytes.Length);
+                //Console.WriteLine(mySendBytes[0]+" "+mySendBytes[1]);
                 _sender.Connect(_ip,_port);
-                _sender.Send(mySendBytes);
-                _sender.Shutdown(SocketShutdown.Both);
-                _sender.Close();
+                Send(_sender, mySendBytes);
+                //_sender.Send(mySendBytes);
+                //_sender.Shutdown(SocketShutdown.Both);
+                //_sender.Close();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                SiAuto.Main.LogException(ex);
+                //SiAuto.Main.LogException(ex);
             }
         }
 
@@ -47,7 +48,7 @@ namespace Carlink
             //byte[] byteArray = System.Text.Encoding.Default.GetBytes(data);
             //byte[] data_length = int_to_hex_little_endian(byteArray.Length);
             byte[] data_length = System.BitConverter.GetBytes(UInt16.Parse(byteArray.Length.ToString()));
-            Console.WriteLine("data_length.Length-" + data_length.Length);
+            //Console.WriteLine("data_length.Length-" + data_length.Length);
             byte[] rv = new byte[data_length.Length + byteArray.Length];
             System.Buffer.BlockCopy(data_length, 0, rv, 0, data_length.Length);
             System.Buffer.BlockCopy(byteArray, 0, rv, data_length.Length, byteArray.Length);
@@ -73,6 +74,38 @@ namespace Carlink
                              .Where(x => x % 2 == 0)
                              .Select(x => Convert.ToByte(hex.Substring(x, 2), 16))
                              .ToArray();
+        }
+
+        private static void Send(Socket client, byte[] byteData)
+        {
+            // Convert the string data to byte data using ASCII encoding.
+            //byte[] byteData = Encoding.ASCII.GetBytes(data);
+
+            // Begin sending the data to the remote device.
+            client.BeginSend(byteData, 0, byteData.Length, 0,
+                new AsyncCallback(SendCallback), client);
+        }
+
+        private static void SendCallback(IAsyncResult ar)
+        {
+            try
+            {
+                // Retrieve the socket from the state object.
+                Socket client = (Socket)ar.AsyncState;
+
+                // Complete sending the data to the remote device.
+                int bytesSent = client.EndSend(ar);
+                client.Shutdown(SocketShutdown.Both);
+                client.Close();
+                Console.WriteLine("Sent {0} bytes to server.", bytesSent);
+
+                // Signal that all bytes have been sent.
+                //sendDone.Set();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
         }
     }
 }
