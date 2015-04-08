@@ -25,7 +25,7 @@ namespace Carlink.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2500")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
         public int CarNumber {
             get {
                 return ((int)(this["CarNumber"]));
