@@ -18,7 +18,7 @@ namespace Carlink
         //static readonly Random random = new Random();
         static readonly string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         static readonly string distance = "0123456789";
-        private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,51,52,53};
+        private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,43,51,52,53};
         static readonly object mylock = new object();
 
 
@@ -292,6 +292,7 @@ namespace Carlink
                         break;
                     case 41:
                     case 42:
+                    case 43:
                         {
                             byte[] dataBytes = new byte[10]
                     {
