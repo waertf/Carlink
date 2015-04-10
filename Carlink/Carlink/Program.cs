@@ -192,7 +192,8 @@ namespace Carlink
                             byte airFlowRate = (byte)(random.Next(byte.MaxValue));
                             byte throttlePosition = (byte)(random.Next(byte.MaxValue));
                             byte batteryVoltage = (byte)(random.Next(byte.MaxValue));
-                            byte[] dataBytes = new byte[20]
+                            byte InstantFuel = (byte)(random.Next(byte.MaxValue));
+                            byte[] dataBytes = new byte[21]
                     {
                         time[0],
                         time[1],
@@ -213,9 +214,10 @@ namespace Carlink
                         intakeAirTemperature,
                         airFlowRate,
                         throttlePosition,
-                        batteryVoltage
+                        batteryVoltage,
+                        InstantFuel
                     };
-                            byte[] sendBytes = new byte[35];
+                            byte[] sendBytes = new byte[36];
                             Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
