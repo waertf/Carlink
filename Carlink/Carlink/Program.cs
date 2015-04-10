@@ -64,7 +64,7 @@ namespace Carlink
             Thread[] workerThread = new Thread[Properties.Settings.Default.CarNumber];
             for (int i = 0; i < Properties.Settings.Default.CarNumber; i++)
             {
-                workerThread[i]=new Thread(send);
+                workerThread[i]=new Thread(send,256);
                 workerThread[i].Start(new Random());
             }
             /*
@@ -359,7 +359,7 @@ namespace Carlink
      {
          SocketClient mysocket = new SocketClient(ipAddress, port);
          mysocket.Write(sendBytes);
-     });
+     },256);
                     t1.Start();
                     /*
                     Task.Factory.StartNew(() =>
