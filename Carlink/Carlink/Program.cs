@@ -59,13 +59,14 @@ namespace Carlink
                 Console.WriteLine(b);
             }
             */
-            
 
+            //ThreadPool.SetMaxThreads(20000, 40000);
             Thread[] workerThread = new Thread[Properties.Settings.Default.CarNumber];
+            Random ra=new Random();
             for (int i = 0; i < Properties.Settings.Default.CarNumber; i++)
             {
                 workerThread[i]=new Thread(send,256);
-                workerThread[i].Start(new Random());
+                workerThread[i].Start(ra);
             }
             /*
             byte[] aBytes = new byte[]{1,2,3};
@@ -99,6 +100,12 @@ namespace Carlink
 
             Stopwatch stopwatch= new Stopwatch();
             stopwatch.Start();
+
+            byte[] uid = Encoding.ASCII.GetBytes(new string(
+                    Enumerable.Repeat(chars, 8)
+                        .Select(s => s[random.Next(s.Length)])
+                        .ToArray()));
+
             while (true)
             {
                 if(totalSendBytes==null)
@@ -106,10 +113,12 @@ namespace Carlink
                 #region
 
                 bool[] timeBitArray = new bool[32];
+                /*
                 byte[] uid = Encoding.ASCII.GetBytes(new string(
                     Enumerable.Repeat(chars, 8)
                         .Select(s => s[random.Next(s.Length)])
                         .ToArray()));
+                */
                 byte[] totalGoDistance = Encoding.ASCII.GetBytes(new string(
                     Enumerable.Repeat(distance, 6)
                         .Select(s => s[random.Next(s.Length)])
@@ -355,8 +364,9 @@ namespace Carlink
                 {
                     stopwatch.Restart();
                     byte[] sendBytes = totalSendBytes.ToArray();
-                    //Console.WriteLine(sendBytes.Length);
+                    Console.WriteLine(Encoding.Default.GetString(uid));
                     totalSendBytes = null;
+                    
                     System.Threading.Thread t1 = new System.Threading.Thread
      (delegate()
      {
@@ -364,6 +374,7 @@ namespace Carlink
          mysocket.Write(sendBytes);
      },256);
                     t1.Start();
+                    
                     /*
                     Task.Factory.StartNew(() =>
                     {
@@ -371,6 +382,13 @@ namespace Carlink
                         SocketClient mysocket = new SocketClient(ipAddress, port);
                         mysocket.Write(sendBytes);
                             //mysockeThreadLocal.Value.Write(sendBytes);
+                    });
+                    */
+                    /*
+                    ThreadPool.QueueUserWorkItem(delegate
+                    {
+                        SocketClient mysocket = new SocketClient(ipAddress, port);
+                        mysocket.Write(sendBytes);
                     });
                     */
                 }
