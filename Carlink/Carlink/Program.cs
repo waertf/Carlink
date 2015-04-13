@@ -18,7 +18,7 @@ namespace Carlink
         //static readonly Random random = new Random();
         static readonly string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         static readonly string distance = "0123456789";
-        private static readonly byte[] status = new byte[]{10,11,12,13,20,30,41,42,43,51,52,53};
+        private static readonly byte[] status = new byte[]{11};
         static readonly object mylock = new object();
 
 
@@ -105,7 +105,7 @@ namespace Carlink
                     Enumerable.Repeat(chars, 8)
                         .Select(s => s[random.Next(s.Length)])
                         .ToArray()));
-
+            SocketClient mysocket = new SocketClient(ipAddress, port);
             while (true)
             {
                 if(totalSendBytes==null)
@@ -360,7 +360,7 @@ namespace Carlink
                         }
                         break;
                 }
-                if (stopwatch.Elapsed.Seconds >= 15)
+                //if (stopwatch.Elapsed.Seconds >= 15)
                 {
                     stopwatch.Restart();
                     byte[] sendBytes = totalSendBytes.ToArray();
@@ -370,7 +370,7 @@ namespace Carlink
                     System.Threading.Thread t1 = new System.Threading.Thread
      (delegate()
      {
-         SocketClient mysocket = new SocketClient(ipAddress, port);
+         //SocketClient mysocket = new SocketClient(ipAddress, port);
          mysocket.Write(sendBytes);
      },256);
                     t1.Start();

@@ -14,13 +14,14 @@ namespace Carlink
         private int _port;
         const int LENGTH_TO_CUT = 4;
         private Socket _sender;
+        static object mylock = new object();
         public SocketClient(string ipAddress, int port)
         {
             _sender = new Socket(AddressFamily.InterNetwork,
                 SocketType.Stream, ProtocolType.Tcp);
             _ip = ipAddress;
             _port = port;
-
+            _sender.Connect(_ip, _port);
         }
 
         public void Write(byte[] dataBytes)
@@ -30,7 +31,7 @@ namespace Carlink
                 byte[] mySendBytes = data_append_dataLength(dataBytes);
                 //Console.WriteLine(mySendBytes.Length);
                 //Console.WriteLine(mySendBytes[0]+" "+mySendBytes[1]);
-                _sender.Connect(_ip,_port);
+                //_sender.Connect(_ip,_port);
                 Send(_sender, mySendBytes);
                 //_sender.Send(mySendBytes);
                 //_sender.Shutdown(SocketShutdown.Both);
@@ -82,6 +83,7 @@ namespace Carlink
             //byte[] byteData = Encoding.ASCII.GetBytes(data);
 
             // Begin sending the data to the remote device.
+            lock (mylock)
             client.BeginSend(byteData, 0, byteData.Length, 0,
                 new AsyncCallback(SendCallback), client);
         }
@@ -95,8 +97,8 @@ namespace Carlink
 
                 // Complete sending the data to the remote device.
                 int bytesSent = client.EndSend(ar);
-                client.Shutdown(SocketShutdown.Both);
-                client.Close();
+                //client.Shutdown(SocketShutdown.Both);
+                //client.Close();
                 Console.WriteLine("Sent {0} bytes to server.", bytesSent);
 
                 // Signal that all bytes have been sent.
