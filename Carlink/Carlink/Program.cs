@@ -364,7 +364,7 @@ namespace Carlink
                 {
                     stopwatch.Restart();
                     byte[] sendBytes = totalSendBytes.ToArray();
-                    Console.WriteLine(Encoding.Default.GetString(uid));
+                    //Console.WriteLine(Encoding.Default.GetString(uid));
                     totalSendBytes = null;
                     
                     System.Threading.Thread t1 = new System.Threading.Thread
