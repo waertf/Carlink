@@ -18,8 +18,8 @@ namespace Carlink
         //static readonly Random random = new Random();
         static readonly string chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         static readonly string distance = "0123456789";
-        //private static readonly byte[] status = new byte[] { 10, 12, 13, 20, 30, 41, 42, 43, 51, 52, 53 };
-        private static readonly byte[] status = new byte[] { 11 };
+        private static readonly byte[] status = new byte[] { 10, 13, 20, 30, 41, 42, 43, 51, 52, 53 };
+        //private static readonly byte[] status = new byte[] { 11, 12 };
         static readonly object mylock = new object();
 
 
@@ -103,7 +103,7 @@ namespace Carlink
             stopwatch.Start();
 
             byte[] uid = Encoding.ASCII.GetBytes(new string(
-                    Enumerable.Repeat(chars, 8)
+                    Enumerable.Repeat(chars, 20)
                         .Select(s => s[random.Next(s.Length)])
                         .ToArray()));
             SocketClient mysocket = new SocketClient(ipAddress, port);
@@ -227,7 +227,7 @@ namespace Carlink
                         batteryVoltage,
                         InstantFuel
                     };
-                            byte[] sendBytes = new byte[36];
+                            byte[] sendBytes = new byte[uid.Length + 1 + totalGoDistance.Length+dataBytes.Length];
                             Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
@@ -261,7 +261,7 @@ namespace Carlink
                         (byte) (random.Next(0xff)),
                         (byte) (random.Next(0xff))
                     };
-                            byte[] sendBytes = new byte[35];
+                            byte[] sendBytes = new byte[uid.Length + 1 + totalGoDistance.Length + dataBytes.Length];
                             Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
@@ -293,7 +293,7 @@ namespace Carlink
                         (byte) (random.Next(0xff)),
                         (byte) (random.Next(0xff))
                     };
-                            byte[] sendBytes = new byte[33];
+                            byte[] sendBytes = new byte[uid.Length + 1 + totalGoDistance.Length + dataBytes.Length];
                             Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
@@ -321,7 +321,7 @@ namespace Carlink
                     };
                             now = DateTime.Now.ToString("yyyyMMddHHmm");
                             byte[] nowBytes = Encoding.ASCII.GetBytes(now);
-                            byte[] sendBytes = new byte[45];
+                            byte[] sendBytes = new byte[uid.Length + 1 + totalGoDistance.Length + dataBytes.Length + uid.Length + nowBytes.Length];
                             Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
@@ -351,7 +351,7 @@ namespace Carlink
                         latMin,
                         latSec
                     };
-                            byte[] sendBytes = new byte[25];
+                            byte[] sendBytes = new byte[uid.Length + 1 + totalGoDistance.Length + dataBytes.Length];
                             Buffer.BlockCopy(uid, 0, sendBytes, 0, uid.Length);
                             sendBytes.SetValue(mystatus, uid.Length);
                             Buffer.BlockCopy(totalGoDistance, 0, sendBytes, uid.Length + 1, totalGoDistance.Length);
@@ -361,7 +361,7 @@ namespace Carlink
                         }
                         break;
                 }
-                if (stopwatch.Elapsed.Seconds >= 15)
+                //if (stopwatch.Elapsed.Seconds >= 15)
                 {
                     stopwatch.Restart();
                     byte[] sendBytes = totalSendBytes.ToArray();
