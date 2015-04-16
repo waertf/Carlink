@@ -63,9 +63,10 @@ namespace Carlink
 
             //ThreadPool.SetMaxThreads(20000, 40000);
             Thread[] workerThread = new Thread[Properties.Settings.Default.CarNumber];
-            Random ra=new Random();
+            //Random ra=new Random();
             for (int i = 0; i < Properties.Settings.Default.CarNumber; i++)
             {
+                Random ra = new Random(i);
                 workerThread[i]=new Thread(send,256);
                 workerThread[i].Start(ra);
             }
@@ -100,13 +101,14 @@ namespace Carlink
             //ThreadLocal<SocketClient> mysockeThreadLocal = new ThreadLocal<SocketClient>(() => { return new SocketClient(ipAddress, port); });
 
             Stopwatch stopwatch= new Stopwatch();
-            stopwatch.Start();
+            //stopwatch.Start();
 
             byte[] uid = Encoding.ASCII.GetBytes(new string(
                     Enumerable.Repeat(chars, 20)
                         .Select(s => s[random.Next(s.Length)])
                         .ToArray()));
             SocketClient mysocket = new SocketClient(ipAddress, port);
+            stopwatch.Start();
             while (true)
             {
                 if(totalSendBytes==null)
