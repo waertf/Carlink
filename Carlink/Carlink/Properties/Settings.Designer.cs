@@ -25,7 +25,7 @@ namespace Carlink.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("3")]
         public int CarNumber {
             get {
                 return ((int)(this["CarNumber"]));
@@ -37,7 +37,7 @@ namespace Carlink.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("192.168.1.132")]
+        [global::System.Configuration.DefaultSettingValueAttribute("127.0.0.1")]
         public string serverIPAddress {
             get {
                 return ((string)(this["serverIPAddress"]));
